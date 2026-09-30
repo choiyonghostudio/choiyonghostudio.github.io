@@ -208,28 +208,33 @@
       if (!form.reportValidity()) return;
 
       const data = new FormData(form);
-      if (data.get("_honey")) return;
+      if (data.get("botcheck")) return;
+
+      const accessKey = data.get("access_key");
+      if (!accessKey || accessKey === "WEB3FORMS_ACCESS_KEY") {
+        mailtoFallback(data);
+        return;
+      }
 
       const payload = {
+        access_key: accessKey,
+        from_name: data.get("from_name"),
+        subject: "[YONGHO CHOI 웹사이트] " + data.get("subject"),
         name: data.get("name"),
         email: data.get("email"),
-        _replyto: data.get("email"),
-        _subject: "[YONGHO CHOI 웹사이트] " + data.get("subject"),
         message: data.get("message"),
-        _captcha: "false",
-        _template: "table",
       };
 
       submit.disabled = true;
       setStatus("보내는 중...", "");
       try {
-        const res = await fetch(form.dataset.ajaxAction, {
+        const res = await fetch(form.action, {
           method: "POST",
           headers: { "Content-Type": "application/json", Accept: "application/json" },
           body: JSON.stringify(payload),
         });
         const result = await res.json().catch(() => ({}));
-        if (res.ok && String(result.success) === "true") {
+        if (res.ok && result.success === true) {
           form.reset();
           setStatus("메시지가 전송되었습니다. 감사합니다!", "success");
         } else {

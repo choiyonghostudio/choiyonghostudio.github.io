@@ -6,7 +6,7 @@
     <title>Contact | YONGHO CHOI</title>
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Contact | YONGHO CHOI" />
-    <link rel="stylesheet" href="style.css?v=yongho-7" />
+    <link rel="stylesheet" href="style.css?v=yongho-8" />
   </head>
   <body data-page="contact">
     <header class="site-header">
@@ -42,11 +42,14 @@
         <form
           class="contact-form"
           id="contact-form"
-          action="https://formsubmit.co/choiyongho.studio@gmail.com"
+          action="https://api.web3forms.com/submit"
           method="POST"
-          data-ajax-action="https://formsubmit.co/ajax/choiyongho.studio@gmail.com"
           data-mailto="choiyongho.studio@gmail.com"
         >
+          <!-- Web3Forms 키는 받는 주소만 지정하는 공개용이라 HTML 에 노출돼도 안전 -->
+          <input type="hidden" name="access_key" value="ae275a8f-15d5-4395-9dd2-a0532164cfd4" />
+          <input type="hidden" name="from_name" value="YONGHO CHOI 웹사이트" />
+          <input type="hidden" name="redirect" value="https://choiyonghostudio.github.io/contact.html" />
           <div class="contact-row">
             <label class="contact-field">
               <span>이름</span>
@@ -66,9 +69,7 @@
             <textarea name="message" rows="9" required maxlength="5000"></textarea>
           </label>
 
-          <input type="text" name="_honey" class="contact-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" />
-          <input type="hidden" name="_captcha" value="false" />
-          <input type="hidden" name="_template" value="table" />
+          <input type="checkbox" name="botcheck" class="contact-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
           <div class="contact-actions">
             <button type="submit" class="contact-submit">보내기</button>
@@ -79,6 +80,6 @@
     </main>
 
     <footer class="site-footer">© 2026 YONGHO CHOI</footer>
-    <script src="site.js?v=yongho-7"></script>
+    <script src="site.js?v=yongho-8"></script>
   </body>
 </html>
