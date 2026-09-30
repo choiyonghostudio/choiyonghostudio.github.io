@@ -170,6 +170,81 @@
     }
   }
 
+  function initContactForm() {
+    const form = document.getElementById("contact-form");
+    if (!form) return;
+    const status = document.getElementById("contact-status");
+    const submit = form.querySelector(".contact-submit");
+
+    const setStatus = (text, kind) => {
+      status.textContent = text;
+      status.className = "contact-status" + (kind ? " is-" + kind : "");
+    };
+
+    const mailtoFallback = (data) => {
+      const link = document.createElement("a");
+      link.href =
+        "mailto:" +
+        form.dataset.mailto +
+        "?subject=" +
+        encodeURIComponent(data.get("subject") || "") +
+        "&body=" +
+        encodeURIComponent(
+          (data.get("message") || "") +
+            "\n\n— " +
+            (data.get("name") || "") +
+            " <" +
+            (data.get("email") || "") +
+            ">"
+        );
+      link.textContent = "메일 앱으로 보내기";
+      setStatus("전송에 실패했습니다. 잠시 후 다시 시도하거나 ", "error");
+      status.appendChild(link);
+      status.appendChild(document.createTextNode(" 를 눌러주세요."));
+    };
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      if (!form.reportValidity()) return;
+
+      const data = new FormData(form);
+      if (data.get("_honey")) return;
+
+      const payload = {
+        name: data.get("name"),
+        email: data.get("email"),
+        _replyto: data.get("email"),
+        _subject: "[YONGHO CHOI 웹사이트] " + data.get("subject"),
+        message: data.get("message"),
+        _captcha: "false",
+        _template: "table",
+      };
+
+      submit.disabled = true;
+      setStatus("보내는 중...", "");
+      try {
+        const res = await fetch(form.dataset.ajaxAction, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify(payload),
+        });
+        const result = await res.json().catch(() => ({}));
+        if (res.ok && String(result.success) === "true") {
+          form.reset();
+          setStatus("메시지가 전송되었습니다. 감사합니다!", "success");
+        } else {
+          console.error("문의 전송 실패:", result.message || res.status);
+          mailtoFallback(data);
+        }
+      } catch (err) {
+        console.error("문의 전송 실패:", err);
+        mailtoFallback(data);
+      } finally {
+        submit.disabled = false;
+      }
+    });
+  }
+
   function syncHeaderHeight() {
     const header = document.querySelector(".site-header");
     if (!header) return;
@@ -183,6 +258,7 @@
     syncHeaderHeight();
     window.addEventListener("resize", syncHeaderHeight);
     markActiveNav();
+    initContactForm();
     const nav = document.getElementById("site-nav");
     try {
       const collections = await loadCollections();

@@ -192,6 +192,147 @@ main {
   white-space: pre-wrap;
 }
 
+.page-prose:empty {
+  display: none;
+}
+
+.contact-section {
+  width: min(var(--content-width), calc(100% - 2.5rem));
+  margin: 1.6rem auto 6rem;
+  padding-left: 3.75rem;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #111111;
+}
+
+.contact-title {
+  margin: 0 0 0.6rem;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 0.95rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+.contact-lead {
+  margin: 0 0 2rem;
+  color: #767676;
+  font-size: 0.72rem;
+  font-weight: 300;
+  line-height: 1.7;
+}
+
+.contact-lead a {
+  color: #111111;
+  border-bottom: 1px solid #c8c8c8;
+}
+
+.contact-form {
+  max-width: 36rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.contact-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.1rem;
+}
+
+.contact-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.contact-field span {
+  color: #767676;
+  font-size: 0.68rem;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+}
+
+.contact-field input,
+.contact-field textarea {
+  width: 100%;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid #d6d6d6;
+  border-radius: 0;
+  background: #ffffff;
+  color: #111111;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 300;
+  line-height: 1.6;
+  transition: border-color 0.15s ease;
+}
+
+.contact-field textarea {
+  resize: vertical;
+  min-height: 10rem;
+}
+
+.contact-field input:focus,
+.contact-field textarea:focus {
+  outline: none;
+  border-color: #111111;
+}
+
+.contact-honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.contact-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  flex-wrap: wrap;
+}
+
+.contact-submit {
+  padding: 0.7rem 2.2rem;
+  border: 1px solid #111111;
+  background: #111111;
+  color: #ffffff;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  transition: opacity 0.15s ease;
+}
+
+.contact-submit:hover {
+  opacity: 0.75;
+}
+
+.contact-submit:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.contact-status {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 300;
+  line-height: 1.6;
+  color: #767676;
+}
+
+.contact-status.is-success {
+  color: #1f7a3d;
+}
+
+.contact-status.is-error {
+  color: #b42318;
+}
+
+.contact-status a {
+  color: inherit;
+  border-bottom: 1px solid currentColor;
+}
+
 .site-footer {
   width: min(var(--content-width), calc(100% - 2.5rem));
   margin: auto auto 2.2rem;
@@ -335,8 +476,13 @@ main {
     gap: 4.5rem;
   }
 
-  .page-prose {
+  .page-prose,
+  .contact-section {
     padding-left: 0.4rem;
+  }
+
+  .contact-row {
+    grid-template-columns: 1fr;
   }
 }
 
