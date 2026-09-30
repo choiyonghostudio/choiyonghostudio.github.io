@@ -1,5 +1,6 @@
 #!/bin/zsh
 
+export PATH="$HOME/.local/node/bin:$HOME/.local/gh:/opt/homebrew/bin:/usr/local/bin:$PATH"
 cd -- "$(dirname "$0")"
 
 echo

@@ -1,38 +1,26 @@
 /**
- * WALL / collections 변경 감지 → images.json(갤러리+background) 생성/갱신 → git commit & push
+ * WALL / collections 변경 감지 → images.json(갤러리+background)·sitemap.xml 갱신 → GitHub 업로드
  * 프로젝트 루트에서 실행: node sync-and-push.js
+ * git 이 없어도 동작 (publish-github.js 가 GitHub API 로 직접 커밋)
  */
 
-const path = require("path");
-const { execSync } = require("child_process");
 const { runSync } = require("./sync-local.js");
-
-const ROOT = path.resolve(__dirname);
-
-function run(cmd, cwd = ROOT) {
-  execSync(cmd, { cwd, stdio: "inherit", shell: true });
-}
+const { generateSitemap } = require("./generate-sitemap.js");
+const { publish, SITE_URL } = require("./publish-github.js");
 
 runSync()
   .then(() => {
-    try {
-      const status = execSync("git status --porcelain", { cwd: ROOT, encoding: "utf8" }).trim();
-      if (!status) {
-        console.log("\n📤 커밋할 변경 없음. 푸시 생략.");
-        return;
-      }
-      console.log("\n📤 Git 커밋 및 푸시...");
-      run("git add -A");
-      run('git commit -m "chore: collections 동기화"');
-      run("git push");
-      console.log("\n✅ 동기화 및 푸시 완료. 사이트가 곧 반영됩니다.");
-    } catch (e) {
-      if (e.status === 128 || (e.message && e.message.includes("not a git repository"))) {
-        console.log("\n⚠ 이 폴더는 Git 저장소가 아니거나 원격이 없어 푸시를 건너뜁니다.");
-      } else {
-        throw e;
-      }
+    if (generateSitemap()) console.log("🗺 sitemap.xml 갱신");
+    console.log("\n📤 GitHub 업로드...");
+    return publish("chore: collections 동기화");
+  })
+  .then((result) => {
+    if (!result.changed) {
+      console.log("\n📤 변경 없음. 업로드 생략.");
+      return;
     }
+    console.log(`\n✅ 동기화 및 업로드 완료: ${result.url}`);
+    console.log(`   사이트(${SITE_URL})에는 1~2분 후 반영됩니다.`);
   })
   .catch((err) => {
     console.error("❌ 오류:", err.message);
