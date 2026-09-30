@@ -1,0 +1,351 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  color: #111111;
+  font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+:root {
+  --content-width: 960px;
+  --photo-width: 920px;
+  --header-height: 168px;
+}
+
+.site-header {
+  position: relative;
+  z-index: 40;
+  background: #ffffff;
+  overflow: visible;
+}
+
+.header-inner {
+  width: min(var(--content-width), calc(100% - 2rem));
+  margin: 0 auto;
+  min-height: var(--header-height);
+  padding: 3.6rem 0 2.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.site-logo {
+  flex: 0 0 auto;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 0.84rem;
+  font-weight: 300;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #111111;
+  white-space: nowrap;
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex: 1 1 auto;
+  flex-wrap: nowrap;
+  gap: 0.15rem;
+}
+
+.site-nav .nav-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 5.8rem;
+  padding: 0.45rem 0.85rem;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  color: #111111;
+  white-space: nowrap;
+}
+
+.site-nav .nav-link:hover,
+.site-nav .nav-link.is-active,
+.nav-item.is-open > .nav-link {
+  opacity: 0.55;
+}
+
+.nav-item {
+  position: relative;
+}
+
+.nav-panel {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  min-width: 13.5rem;
+  width: max-content;
+  max-width: min(22rem, calc(100vw - 1.5rem));
+  max-height: min(70vh, 36rem);
+  overflow-y: auto;
+  padding: 0.45rem 1.15rem 0.85rem;
+  background: #ffffff;
+  text-align: center;
+}
+
+.nav-item.is-open .nav-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.nav-panel a {
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 0.72rem;
+  font-weight: 400;
+  line-height: 1.55;
+  color: #111111;
+  text-align: center;
+  padding: 0.12rem 0;
+}
+
+.nav-panel a:hover {
+  opacity: 0.55;
+}
+
+main {
+  flex: 1 0 auto;
+  width: 100%;
+}
+
+.home-featured {
+  width: min(var(--photo-width), calc(100% - 2.5rem));
+  margin: 2.4rem auto 6rem;
+}
+
+.home-featured img {
+  width: 100%;
+  height: auto;
+}
+
+.gallery-stack {
+  width: min(var(--photo-width), calc(100% - 2.5rem));
+  margin: 2.4rem auto 6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8.8rem;
+}
+
+.gallery-item {
+  margin: 0;
+  width: 100%;
+  background: transparent;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: auto;
+  cursor: zoom-in;
+}
+
+.page-prose {
+  width: min(var(--content-width), calc(100% - 2.5rem));
+  margin: 1.6rem auto 6rem;
+  padding-left: 3.75rem;
+  color: #767676;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 300;
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+  white-space: pre-wrap;
+}
+
+.site-footer {
+  width: min(var(--content-width), calc(100% - 2.5rem));
+  margin: auto auto 2.2rem;
+  padding-top: 2rem;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 0.68rem;
+  font-weight: 300;
+  color: #767676;
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.84);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+  z-index: 80;
+}
+
+.lightbox.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.lightbox-backdrop {
+  position: absolute;
+  inset: 0;
+}
+
+.lightbox-content {
+  position: relative;
+  max-width: min(1400px, 95vw);
+  max-height: 95vh;
+  margin: 0;
+  overflow: hidden;
+  background: #000000;
+}
+
+.lightbox-content img {
+  width: 100%;
+  height: auto;
+  max-height: 95vh;
+  object-fit: contain;
+}
+
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  border: none;
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  font-size: 2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  z-index: 15;
+}
+
+.lightbox-nav:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.lightbox-nav-prev {
+  left: 1.5rem;
+}
+
+.lightbox-nav-next {
+  right: 1.5rem;
+}
+
+.lightbox-close {
+  position: fixed;
+  top: 1rem;
+  right: 1.5rem;
+  z-index: 90;
+  width: 44px;
+  height: 44px;
+  border: none;
+  background: rgba(0, 0, 0, 0.4);
+  color: #ffffff;
+  font-size: 1.75rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+@media (max-width: 900px) {
+  :root {
+    --header-height: auto;
+  }
+
+  .header-inner {
+    min-height: 0;
+    padding: 1.6rem 0 1.1rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .site-nav {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .site-nav .nav-link {
+    min-width: 0;
+    padding: 0.35rem 0.7rem 0.35rem 0;
+    font-size: 0.78rem;
+  }
+
+  .nav-item {
+    position: relative;
+  }
+
+  .nav-panel {
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 7.5rem;
+    max-width: calc(100vw - 1.5rem);
+  }
+
+  .nav-panel a {
+    font-size: 0.78rem;
+  }
+
+  .gallery-stack {
+    gap: 4.5rem;
+  }
+
+  .page-prose {
+    padding-left: 0.4rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .lightbox-nav {
+    display: none !important;
+  }
+
+  .lightbox-close {
+    background: transparent;
+  }
+}

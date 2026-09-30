@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>사진 사이트 템플릿 설치</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Malgun Gothic", sans-serif;
+      font-size: 13px;
+      color: #333;
+      background: #f5f5f5;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .header {
+      background: linear-gradient(180deg, #2c5282 0%, #2b6cb0 100%);
+      color: #fff;
+      padding: 20px 24px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .steps {
+      display: flex;
+      padding: 12px 24px;
+      background: #fff;
+      border-bottom: 1px solid #e2e8f0;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .step {
+      padding: 6px 12px;
+      border-radius: 4px;
+      background: #edf2f7;
+      color: #718096;
+    }
+    .step.active { background: #2b6cb0; color: #fff; }
+    .step.done { background: #c6f6d5; color: #276749; }
+    .content {
+      flex: 1;
+      padding: 24px;
+      overflow: auto;
+    }
+    .page { display: none; }
+    .page.active { display: block; }
+    .page h2 { margin: 0 0 16px; font-size: 15px; color: #2d3748; }
+    .field { margin-bottom: 14px; }
+    .field label { display: block; margin-bottom: 4px; color: #4a5568; }
+    .field input[type="text"],
+    .field input[type="password"] {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid #cbd5e0;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+    .option-group code { background: #edf2f7; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+    .path-row { display: flex; gap: 8px; align-items: center; }
+    .path-row input { flex: 1; }
+    .btn-browse {
+      padding: 8px 14px;
+      background: #e2e8f0;
+      border: 1px solid #cbd5e0;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    .btn-browse:hover { background: #cbd5e0; }
+    .required-note { color: #e53e3e; font-size: 12px; margin-top: 2px; }
+    .option-group {
+      margin-bottom: 20px;
+      padding: 12px;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+    }
+    .option-group h3 { margin: 0 0 8px; font-size: 14px; color: #2d3748; }
+    .option-group p { margin: 0 0 10px; color: #718096; font-size: 12px; line-height: 1.5; }
+    .option-btns { display: flex; gap: 10px; }
+    .option-btns button {
+      padding: 6px 18px;
+      border-radius: 4px;
+      border: 1px solid #cbd5e0;
+      background: #fff;
+      cursor: pointer;
+      font-size: 13px;
+    }
+    .option-btns button.selected { background: #2b6cb0; color: #fff; border-color: #2b6cb0; }
+    .option-btns button:hover:not(.selected) { background: #edf2f7; }
+    .progress-wrap { margin: 16px 0; display: none; }
+    .progress-wrap.show { display: block; }
+    .progress-bar {
+      height: 8px;
+      background: #e2e8f0;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .progress-bar div {
+      height: 100%;
+      background: #2b6cb0;
+      width: 0%;
+      transition: width 0.2s;
+    }
+    .progress-text { margin-top: 8px; color: #718096; font-size: 12px; }
+    .footer {
+      padding: 14px 24px;
+      background: #fff;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .btn {
+      padding: 8px 20px;
+      border-radius: 4px;
+      border: none;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .btn-next, .btn-finish {
+      background: #2b6cb0;
+      color: #fff;
+    }
+    .btn-next:hover:not(:disabled), .btn-finish:hover { background: #2c5282; }
+    .btn-back { background: #e2e8f0; color: #333; }
+    .btn-back:hover { background: #cbd5e0; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .welcome p { color: #4a5568; line-height: 1.6; margin: 0 0 8px; }
+    .finish-msg { color: #276749; margin-bottom: 12px; }
+    .finish-path { font-size: 12px; color: #718096; word-break: break-all; }
+  </style>
+</head>
+<body>
+  <div class="header">사진 사이트 템플릿 설치</div>
+  <div class="steps">
+    <span class="step active" data-step="0">시작</span>
+    <span class="step" data-step="1">경로</span>
+    <span class="step" data-step="2">사이트 이름</span>
+    <span class="step" data-step="3">필수 프로그램</span>
+    <span class="step" data-step="4">GitHub 연동</span>
+    <span class="step" data-step="5">설치</span>
+  </div>
+  <div class="content">
+    <div class="page active" data-page="0">
+      <h2>시작</h2>
+      <p class="welcome">디자인과 편의 기능이 포함된 사진 사이트 템플릿을 설치합니다.<br>설치 경로와 사이트 이름을 설정한 뒤 설치를 진행합니다.</p>
+    </div>
+    <div class="page" data-page="1">
+      <h2>설치 경로</h2>
+      <div class="field">
+        <label>설치할 폴더</label>
+        <div class="path-row">
+          <input type="text" id="installPath" placeholder="찾아보기로 폴더를 선택하세요" />
+          <button type="button" class="btn-browse" id="browseBtn">찾아보기</button>
+        </div>
+        <span class="required-note">* 경로를 선택해야 다음 단계로 진행할 수 있습니다.</span>
+      </div>
+    </div>
+    <div class="page" data-page="2">
+      <h2>사이트 이름</h2>
+      <div class="field">
+        <label>로고 상단 (예: JUNG IN HWAN) <span class="required-note">* 필수</span></label>
+        <input type="text" id="mainTitle" value="" placeholder="사이트 이름을 입력하세요" />
+      </div>
+      <div class="field">
+        <label>로고 하단 (예: Photography)</label>
+        <input type="text" id="subtitle" value="Photography" />
+      </div>
+      <p class="required-note">* 사이트 이름(로고 상단)을 입력해야 다음 버튼을 누를 수 있습니다.</p>
+    </div>
+    <div class="page" data-page="3">
+      <h2>필수 프로그램</h2>
+      <p style="margin-bottom:16px; color:#4a5568;">아래 프로그램이 없으면 설치를 선택하세요. 이미 최신 버전이 있다면 설치할 필요 없습니다.</p>
+      <div class="option-group">
+        <h3>Node.js를 설치하시겠습니까?</h3>
+        <p>테스트 서버 실행 및 npm 사용에 필요합니다.</p>
+        <div class="option-btns" id="nodeBtns">
+          <button type="button" data-value="yes">예</button>
+          <button type="button" data-value="no" class="selected">아니오</button>
+        </div>
+      </div>
+      <div class="option-group">
+        <h3>Git을 설치하시겠습니까?</h3>
+        <p>GitHub 페이지에 푸시(배포)할 때 필요합니다.</p>
+        <div class="option-btns" id="gitBtns">
+          <button type="button" data-value="yes">예</button>
+          <button type="button" data-value="no" class="selected">아니오</button>
+        </div>
+      </div>
+    </div>
+    <div class="page" data-page="4">
+      <h2>GitHub 연동</h2>
+      <p style="margin-bottom:12px; color:#4a5568;">GitHub에 로그인한 뒤, 새 저장소를 만들고 사이트 퍼블리싱 설정까지 설치 중에 자동으로 진행합니다.</p>
+      <div class="field">
+        <label>GitHub Personal Access Token (repo 권한) <span class="required-note">* 필수</span></label>
+        <div class="path-row">
+          <input type="password" id="githubToken" placeholder="ghp_xxxx..." autocomplete="off" />
+          <button type="button" class="btn-browse" id="openTokenUrl">토큰 발급</button>
+        </div>
+        <span class="required-note">토큰 발급 버튼으로 GitHub에서 새 토큰을 만든 뒤 붙여넣으세요. (repo 권한 체크)</span>
+      </div>
+      <div class="field" id="githubUserWrap" style="display:none;">
+        <label>연동된 계정</label>
+        <p id="githubUser" style="margin:0; color:#2b6cb0; font-weight:600;"></p>
+      </div>
+      <div class="field">
+        <label>저장소 이름 (GitHub에 새로 만들 저장소)</label>
+        <input type="text" id="repoName" value="my-photo-site" placeholder="my-photo-site" />
+      </div>
+      <div class="option-group">
+        <h3>사이트 주소</h3>
+        <p>권장: <strong>username.github.io</strong> 로 두면 <code>https://사용자명.github.io</code> 로 열립니다.</p>
+        <div class="option-btns" id="useGithubIoBtns">
+          <button type="button" data-value="yes" class="selected">username.github.io 로 사용 (권장)</button>
+          <button type="button" data-value="no">다른 이름 사용 (https://사용자명.github.io/저장소명)</button>
+        </div>
+      </div>
+      <p style="color:#718096; font-size:12px; margin-top:12px;">설치 시 GitHub에 새 저장소 생성 → 원격 연결 → 첫 푸시 → GitHub Pages 설정까지 자동으로 진행됩니다. 이후에는 콜렉션·사진만 추가하고 푸시 실행 파일만 누르면 됩니다.</p>
+    </div>
+    <div class="page" data-page="5">
+      <h2>설치 중</h2>
+      <div class="progress-wrap" id="progressWrap">
+        <div class="progress-bar"><div id="progressBar"></div></div>
+        <div class="progress-text" id="progressText">준비 중...</div>
+      </div>
+    </div>
+    <div class="page" data-page="6">
+      <h2>설치 완료</h2>
+      <p class="finish-msg">설치가 완료되었습니다.</p>
+      <p class="finish-path" id="finishPath"></p>
+      <p id="finishSiteUrl" style="margin:8px 0; color:#2b6cb0;"></p>
+      <p>할 일: <strong>home</strong>에 홈 대표사진(<strong>featured.jpg</strong>), <strong>personal-works</strong>와 <strong>works</strong>에 컬렉션 폴더를 만들고 사진을 넣으세요.<br>테스트: "동기화-및-로컬서버.bat" 실행 · 푸시: "동기화-및-푸시.bat" 실행</p>
+    </div>
+  </div>
+  <div class="footer">
+    <div>
+      <button type="button" class="btn btn-back" id="backBtn" style="display:none;">뒤로</button>
+    </div>
+    <div>
+      <button type="button" class="btn btn-next" id="nextBtn" disabled>다음</button>
+      <button type="button" class="btn btn-finish" id="finishBtn" style="display:none;">마침</button>
+    </div>
+  </div>
+  <script src="wizard.js"></script>
+</body>
+</html>

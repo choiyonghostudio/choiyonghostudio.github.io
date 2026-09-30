@@ -1,0 +1,13 @@
+forceCodeSigning: false
+appId: com.photosite.installer
+productName: 사진 사이트 템플릿 설치
+directories:
+  output: ../웹사이트 설치 프로그램
+win:
+  target: portable
+  icon: null
+portable:
+  artifactName: PhotoSite-Setup.exe
+extraResources:
+  - from: resources/payload.zip
+    to: payload.zip

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>YONGHO CHOI</title>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="YONGHO CHOI" />
+    <link rel="stylesheet" href="style.css?v=yongho-6" />
+  </head>
+  <body data-page="">
+    <header class="site-header">
+      <div class="header-inner">
+        <a href="index.html" class="site-logo">YONGHO CHOI</a>
+        <nav class="site-nav" id="site-nav" aria-label="사이트">
+          <a href="index.html" class="nav-link" data-nav="home">Home</a>
+          <div class="nav-item">
+            <button type="button" class="nav-link" data-nav="personal">Personal Works</button>
+            <div class="nav-panel" id="panel-personal"></div>
+          </div>
+          <div class="nav-item">
+            <button type="button" class="nav-link" data-nav="works">Works</button>
+            <div class="nav-panel" id="panel-works"></div>
+          </div>
+          <a href="about.html" class="nav-link" data-nav="about">About</a>
+          <a href="contact.html" class="nav-link" data-nav="contact">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="gallery-stack" id="gallery" aria-label="사진 갤러리"></section>
+    </main>
+
+    <footer class="site-footer">© 2026 YONGHO CHOI</footer>
+
+    <div class="lightbox" id="lightbox" aria-hidden="true">
+      <div class="lightbox-backdrop" data-lightbox-close></div>
+      <figure class="lightbox-content">
+        <img id="lightbox-image" alt="" />
+        <button class="lightbox-close" type="button" aria-label="닫기" data-lightbox-close>×</button>
+      </figure>
+      <button class="lightbox-nav lightbox-nav-prev" type="button" aria-label="이전 사진" data-lightbox-nav="prev">‹</button>
+      <button class="lightbox-nav lightbox-nav-next" type="button" aria-label="다음 사진" data-lightbox-nav="next">›</button>
+    </div>
+
+    <script src="site.js?v=yongho-6"></script>
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const section = params.get("section") || "";
+      const collectionId = params.get("id") || params.get("collection") || "";
+      const allowed = section === "personal-works" || section === "works";
+
+      document.body.setAttribute("data-page", section === "works" ? "works" : "personal");
+
+      let imageList = [];
+      let currentImageIndex = -1;
+
+      function galleryRelPath() {
+        return section + "/" + collectionId;
+      }
+
+      function imageUrlForItem(item) {
+        if (!item || !item.src) return "";
+        return window.YonghoSite.imageUrl(item.src);
+      }
+
+      async function loadGallery() {
+        const galleryEl = document.getElementById("gallery");
+        if (!galleryEl) return;
+        if (!allowed || !collectionId) {
+          window.location.replace("index.html");
+          return;
+        }
+
+        try {
+          const jsonPath = window.YonghoSite.encodeSegments(galleryRelPath()) + "/images.json";
+          const res = await fetch(jsonPath, { cache: "no-store" });
+          if (!res.ok) return;
+          const data = await res.json();
+          const images = Array.isArray(data) ? data : data.images;
+          if (!Array.isArray(images)) return;
+
+          imageList = images.filter((item) => {
+            if (!item || !item.src) return false;
+            const stem = window.YonghoSite.filenameOf(item.src).replace(/\.[^.]+$/, "").toLowerCase();
+            return stem !== "background" && stem !== "bsckground" && !stem.startsWith("bg-");
+          });
+
+          const collections = await window.YonghoSite.loadCollections();
+          const list = section === "works" ? collections.works : collections.personalWorks;
+          const entry = list.find((item) => item.id === collectionId);
+          document.title = (entry && entry.name ? entry.name : collectionId) + " | YONGHO CHOI";
+
+          imageList.forEach((item, index) => {
+            const figure = document.createElement("figure");
+            figure.className = "gallery-item";
+            const img = document.createElement("img");
+            img.src = imageUrlForItem(item);
+            img.alt = item.alt || "";
+            img.loading = "lazy";
+            img.addEventListener("click", () => openLightbox(index));
+            figure.appendChild(img);
+            galleryEl.appendChild(figure);
+          });
+        } catch (error) {
+          console.error("갤러리 로드 중 오류:", error);
+        }
+      }
+
+      function openLightbox(index) {
+        if (index < 0 || index >= imageList.length) return;
+        const lightbox = document.getElementById("lightbox");
+        const img = document.getElementById("lightbox-image");
+        if (!lightbox || !img) return;
+        currentImageIndex = index;
+        const item = imageList[index];
+        img.src = imageUrlForItem(item);
+        img.alt = item.alt || "";
+        updateNavButtons();
+        lightbox.classList.add("is-open");
+        lightbox.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeLightbox() {
+        const lightbox = document.getElementById("lightbox");
+        if (!lightbox) return;
+        lightbox.classList.remove("is-open");
+        lightbox.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+        currentImageIndex = -1;
+      }
+
+      function navigateImage(direction) {
+        if (currentImageIndex < 0 || imageList.length === 0) return;
+        const next =
+          direction === "next"
+            ? (currentImageIndex + 1) % imageList.length
+            : (currentImageIndex - 1 + imageList.length) % imageList.length;
+        const img = document.getElementById("lightbox-image");
+        if (!img) return;
+        const item = imageList[next];
+        img.src = imageUrlForItem(item);
+        img.alt = item.alt || "";
+        currentImageIndex = next;
+        updateNavButtons();
+      }
+
+      function updateNavButtons() {
+        const prevBtn = document.querySelector(".lightbox-nav-prev");
+        const nextBtn = document.querySelector(".lightbox-nav-next");
+        if (prevBtn && nextBtn) {
+          prevBtn.style.display = imageList.length > 1 ? "flex" : "none";
+          nextBtn.style.display = imageList.length > 1 ? "flex" : "none";
+        }
+      }
+
+      let touchStartX = 0;
+      let touchEndX = 0;
+
+      (function setupLightboxEvents() {
+        const lightbox = document.getElementById("lightbox");
+        if (!lightbox) return;
+        lightbox.addEventListener("touchstart", (e) => {
+          touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        lightbox.addEventListener("touchend", (e) => {
+          touchEndX = e.changedTouches[0].screenX;
+          if (!lightbox.classList.contains("is-open")) return;
+          const diff = touchStartX - touchEndX;
+          if (Math.abs(diff) > 50) navigateImage(diff > 0 ? "next" : "prev");
+        }, { passive: true });
+        lightbox.addEventListener("click", (event) => {
+          const target = event.target;
+          if (!(target instanceof HTMLElement)) return;
+          if (target.hasAttribute("data-lightbox-close")) closeLightbox();
+          if (target.hasAttribute("data-lightbox-nav")) {
+            navigateImage(target.getAttribute("data-lightbox-nav"));
+          }
+        });
+        window.addEventListener("keydown", (event) => {
+          if (!lightbox.classList.contains("is-open")) return;
+          if (event.key === "Escape") closeLightbox();
+          if (event.key === "ArrowLeft") navigateImage("prev");
+          if (event.key === "ArrowRight") navigateImage("next");
+        });
+      })();
+
+      loadGallery();
+    </script>
+  </body>
+</html>

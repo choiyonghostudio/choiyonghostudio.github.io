@@ -1,0 +1,41 @@
+{
+  "name": "photo-site-installer",
+  "version": "1.0.0",
+  "description": "사진 사이트 템플릿 설치 프로그램",
+  "main": "main.js",
+  "author": "",
+  "license": "MIT",
+  "scripts": {
+    "start": "electron .",
+    "build": "node copy-payload.js && electron-builder --win portable",
+    "build:installer": "node copy-payload.js && electron-builder --win nsis"
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1"
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.16"
+  },
+  "build": {
+    "appId": "com.photosite.installer",
+    "productName": "사진 사이트 템플릿 설치",
+    "directories": {
+      "output": "../웹사이트 설치 프로그램"
+    },
+    "win": {
+      "target": ["portable"],
+      "icon": null,
+      "signAndEditExecutable": false
+    },
+    "portable": {
+      "artifactName": "PhotoSite-Setup.exe"
+    },
+    "extraResources": [
+      {
+        "from": "resources/payload.zip",
+        "to": "payload.zip"
+      }
+    ]
+  }
+}

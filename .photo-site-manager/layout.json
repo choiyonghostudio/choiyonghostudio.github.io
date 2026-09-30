@@ -1,0 +1,29 @@
+{
+  "collections": {
+    "_WALL": {
+      "columns": 5,
+      "preset": "gallery"
+    }
+  },
+  "seo": {},
+  "preview": {
+    "mainPageUrl": "https://choiyonghostudio.github.io"
+  },
+  "mainPageNav": {
+    "xPercent": 50,
+    "yPercent": 88,
+    "widthPercent": 22,
+    "heightPx": 44,
+    "rotationDeg": 0,
+    "label": "COMSEC",
+    "fontFamily": "system-ui, -apple-system, Segoe UI, sans-serif",
+    "fontSizePx": 14,
+    "fontWeight": "600",
+    "color": "#1e293b",
+    "letterSpacingPx": 0,
+    "buttonBg": "rgba(255,255,255,0.94)",
+    "buttonBorderRadiusPx": 10,
+    "targetCollectionId": "COMSEC",
+    "targetSelector": "a[href*=\"/collections/COMSEC\"], a[href*=\"COMSEC.html\"], a[href*=\"COMSEC/\"], a[href*=\"COMSEC\"]"
+  }
+}

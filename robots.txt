@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+Disallow: /installer-app/
+Disallow: /build/
+Disallow: /node_modules/
+Disallow: /.photo-site-manager/
+Disallow: /__tests__/
+
+Sitemap: https://choiyonghostudio.github.io/sitemap.xml

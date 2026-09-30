@@ -1,0 +1,34 @@
+{
+  "home": {
+    "featured": "ssoorl-28.jpg"
+  },
+  "personalWorks": [
+    {
+      "id": "_WALL",
+      "name": "_WALL",
+      "photoOrder": "asc"
+    },
+    {
+      "id": "Mt.Fuji to Tokyo with BAHNO 1",
+      "name": "Mt.Fuji to Tokyo with BAHNO 1",
+      "photoOrder": "asc"
+    },
+    {
+      "id": "shizuoka",
+      "name": "shizuoka",
+      "photoOrder": "desc"
+    },
+    {
+      "id": "okinawa",
+      "name": "okinawa",
+      "photoOrder": "desc"
+    }
+  ],
+  "works": [
+    {
+      "id": "COMSEC",
+      "name": "COMSEC",
+      "photoOrder": "desc"
+    }
+  ]
+}

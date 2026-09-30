@@ -1,0 +1,57 @@
+{
+  "background": "personal-works/okinawa/background.gif",
+  "images": [
+    {
+      "src": "personal-works/okinawa/13.jpg",
+      "alt": "13"
+    },
+    {
+      "src": "personal-works/okinawa/12.jpg",
+      "alt": "12"
+    },
+    {
+      "src": "personal-works/okinawa/11.jpg",
+      "alt": "11"
+    },
+    {
+      "src": "personal-works/okinawa/10.jpg",
+      "alt": "10"
+    },
+    {
+      "src": "personal-works/okinawa/9.jpg",
+      "alt": "9"
+    },
+    {
+      "src": "personal-works/okinawa/8.jpg",
+      "alt": "8"
+    },
+    {
+      "src": "personal-works/okinawa/7.jpg",
+      "alt": "7"
+    },
+    {
+      "src": "personal-works/okinawa/6.jpg",
+      "alt": "6"
+    },
+    {
+      "src": "personal-works/okinawa/5.jpg",
+      "alt": "5"
+    },
+    {
+      "src": "personal-works/okinawa/4.jpg",
+      "alt": "4"
+    },
+    {
+      "src": "personal-works/okinawa/3.jpg",
+      "alt": "3"
+    },
+    {
+      "src": "personal-works/okinawa/2.jpg",
+      "alt": "2"
+    },
+    {
+      "src": "personal-works/okinawa/1.jpg",
+      "alt": "1"
+    }
+  ]
+}
