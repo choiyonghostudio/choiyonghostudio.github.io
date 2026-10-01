@@ -170,6 +170,166 @@
     }
   }
 
+  const CONTACT_I18N = {
+    ko: {
+      title: "메시지 보내기",
+      leadBefore: "아래 양식을 작성하면 ",
+      leadAfter: "으로 바로 전송됩니다.",
+      name: "이름",
+      email: "이메일 (답장 받을 주소)",
+      subject: "제목",
+      message: "내용",
+      submit: "보내기",
+      sending: "보내는 중...",
+      success: "메시지가 전송되었습니다. 감사합니다!",
+      failBefore: "전송에 실패했습니다. 잠시 후 다시 시도하거나 ",
+      mailApp: "메일 앱으로 보내기",
+      failAfter: "를 눌러주세요.",
+    },
+    en: {
+      title: "Send a message",
+      leadBefore: "Fill out the form below and your message will be sent directly to ",
+      leadAfter: ".",
+      name: "Name",
+      email: "Email (for replies)",
+      subject: "Subject",
+      message: "Message",
+      submit: "Send",
+      sending: "Sending...",
+      success: "Your message has been sent. Thank you!",
+      failBefore: "Something went wrong. Please try again later or ",
+      mailApp: "send it with your email app",
+      failAfter: ".",
+    },
+    ja: {
+      title: "メッセージを送る",
+      leadBefore: "以下のフォームにご記入いただくと、",
+      leadAfter: " に直接送信されます。",
+      name: "お名前",
+      email: "メールアドレス（返信先）",
+      subject: "件名",
+      message: "お問い合わせ内容",
+      submit: "送信",
+      sending: "送信中...",
+      success: "メッセージを送信しました。ありがとうございます！",
+      failBefore: "送信に失敗しました。しばらくしてから再度お試しいただくか、",
+      mailApp: "メールアプリで送信",
+      failAfter: "してください。",
+    },
+    "zh-Hans": {
+      title: "发送消息",
+      leadBefore: "填写以下表单，您的消息将直接发送至 ",
+      leadAfter: "。",
+      name: "姓名",
+      email: "电子邮箱（用于回复）",
+      subject: "主题",
+      message: "内容",
+      submit: "发送",
+      sending: "发送中...",
+      success: "消息已发送，谢谢！",
+      failBefore: "发送失败。请稍后重试，或",
+      mailApp: "使用邮件应用发送",
+      failAfter: "。",
+    },
+    "zh-Hant": {
+      title: "傳送訊息",
+      leadBefore: "填寫以下表單，您的訊息將直接傳送至 ",
+      leadAfter: "。",
+      name: "姓名",
+      email: "電子郵件（用於回覆）",
+      subject: "主旨",
+      message: "內容",
+      submit: "傳送",
+      sending: "傳送中...",
+      success: "訊息已送出，謝謝！",
+      failBefore: "傳送失敗。請稍後再試，或",
+      mailApp: "使用郵件應用程式傳送",
+      failAfter: "。",
+    },
+    es: {
+      title: "Enviar un mensaje",
+      leadBefore: "Completa el formulario y tu mensaje se enviará directamente a ",
+      leadAfter: ".",
+      name: "Nombre",
+      email: "Correo electrónico (para responderte)",
+      subject: "Asunto",
+      message: "Mensaje",
+      submit: "Enviar",
+      sending: "Enviando...",
+      success: "Tu mensaje se ha enviado. ¡Gracias!",
+      failBefore: "No se pudo enviar. Inténtalo de nuevo más tarde o ",
+      mailApp: "envíalo con tu aplicación de correo",
+      failAfter: ".",
+    },
+    fr: {
+      title: "Envoyer un message",
+      leadBefore: "Remplissez le formulaire ci-dessous et votre message sera envoyé directement à ",
+      leadAfter: ".",
+      name: "Nom",
+      email: "E-mail (pour la réponse)",
+      subject: "Objet",
+      message: "Message",
+      submit: "Envoyer",
+      sending: "Envoi en cours...",
+      success: "Votre message a bien été envoyé. Merci !",
+      failBefore: "L’envoi a échoué. Réessayez plus tard ou ",
+      mailApp: "envoyez-le avec votre application de messagerie",
+      failAfter: ".",
+    },
+    de: {
+      title: "Nachricht senden",
+      leadBefore: "Füllen Sie das Formular aus – Ihre Nachricht wird direkt an ",
+      leadAfter: " gesendet.",
+      name: "Name",
+      email: "E-Mail (für die Antwort)",
+      subject: "Betreff",
+      message: "Nachricht",
+      submit: "Senden",
+      sending: "Wird gesendet...",
+      success: "Ihre Nachricht wurde gesendet. Vielen Dank!",
+      failBefore: "Das Senden ist fehlgeschlagen. Bitte versuchen Sie es später erneut oder ",
+      mailApp: "senden Sie sie mit Ihrer E-Mail-App",
+      failAfter: ".",
+    },
+  };
+
+  function toContactLang(tag) {
+    const lower = String(tag || "").toLowerCase();
+    if (lower.startsWith("zh")) {
+      return /hant|-tw|-hk|-mo/.test(lower) ? "zh-Hant" : "zh-Hans";
+    }
+    const base = lower.split("-")[0];
+    return CONTACT_I18N[base] ? base : null;
+  }
+
+  // ?lang=ja 처럼 URL 로 강제 지정 가능 (확인용), 없으면 브라우저 언어 설정 순서대로 매칭
+  function detectContactLang() {
+    const forced = toContactLang(new URLSearchParams(window.location.search).get("lang"));
+    if (forced) return forced;
+    const prefs = navigator.languages && navigator.languages.length
+      ? navigator.languages
+      : [navigator.language];
+    for (const tag of prefs) {
+      const lang = toContactLang(tag);
+      if (lang) return lang;
+    }
+    return "en";
+  }
+
+  let contactText = CONTACT_I18N.ko;
+
+  function localizeContact() {
+    const form = document.getElementById("contact-form");
+    if (!form) return;
+    const lang = detectContactLang();
+    contactText = CONTACT_I18N[lang];
+    document.documentElement.lang = lang;
+    document.querySelectorAll(".contact-section [data-i18n]").forEach((el) => {
+      const text = contactText[el.getAttribute("data-i18n")];
+      if (text != null) el.textContent = text;
+    });
+  }
+
   function initContactForm() {
     const form = document.getElementById("contact-form");
     if (!form) return;
@@ -197,10 +357,10 @@
             (data.get("email") || "") +
             ">"
         );
-      link.textContent = "메일 앱으로 보내기";
-      setStatus("전송에 실패했습니다. 잠시 후 다시 시도하거나 ", "error");
+      link.textContent = contactText.mailApp;
+      setStatus(contactText.failBefore, "error");
       status.appendChild(link);
-      status.appendChild(document.createTextNode(" 를 눌러주세요."));
+      status.appendChild(document.createTextNode(contactText.failAfter));
     };
 
     form.addEventListener("submit", async (event) => {
@@ -223,10 +383,11 @@
         name: data.get("name"),
         email: data.get("email"),
         message: data.get("message"),
+        "방문자 언어": document.documentElement.lang + " (" + (navigator.language || "") + ")",
       };
 
       submit.disabled = true;
-      setStatus("보내는 중...", "");
+      setStatus(contactText.sending, "");
       try {
         const res = await fetch(form.action, {
           method: "POST",
@@ -236,7 +397,7 @@
         const result = await res.json().catch(() => ({}));
         if (res.ok && result.success === true) {
           form.reset();
-          setStatus("메시지가 전송되었습니다. 감사합니다!", "success");
+          setStatus(contactText.success, "success");
         } else {
           console.error("문의 전송 실패:", result.message || res.status);
           mailtoFallback(data);
@@ -294,6 +455,9 @@
     filenameOf,
     encodeSegments,
   };
+
+  // 스크립트가 폼 아래에 있어 DOMContentLoaded 전에도 폼에 접근 가능 → 한국어가 잠깐 보이는 깜빡임 방지
+  localizeContact();
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);

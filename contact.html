@@ -6,7 +6,7 @@
     <title>Contact | YONGHO CHOI</title>
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Contact | YONGHO CHOI" />
-    <link rel="stylesheet" href="style.css?v=yongho-8" />
+    <link rel="stylesheet" href="style.css?v=yongho-9" />
   </head>
   <body data-page="contact">
     <header class="site-header">
@@ -32,12 +32,8 @@
       <div class="page-prose" id="page-prose" data-src="contact.txt"></div>
 
       <section class="contact-section" aria-labelledby="contact-title">
-        <h1 class="contact-title" id="contact-title">Send a message</h1>
-        <p class="contact-lead">
-          아래 양식을 작성하면
-          <a href="mailto:choiyongho.studio@gmail.com">choiyongho.studio@gmail.com</a>
-          으로 바로 전송됩니다.
-        </p>
+        <h1 class="contact-title" id="contact-title" data-i18n="title">메시지 보내기</h1>
+        <p class="contact-lead"><span data-i18n="leadBefore">아래 양식을 작성하면 </span><a href="mailto:choiyongho.studio@gmail.com">choiyongho.studio@gmail.com</a><span data-i18n="leadAfter">으로 바로 전송됩니다.</span></p>
 
         <form
           class="contact-form"
@@ -52,27 +48,27 @@
           <input type="hidden" name="redirect" value="https://choiyonghostudio.github.io/contact.html" />
           <div class="contact-row">
             <label class="contact-field">
-              <span>이름</span>
+              <span data-i18n="name">이름</span>
               <input type="text" name="name" autocomplete="name" required maxlength="100" />
             </label>
             <label class="contact-field">
-              <span>이메일 (답장 받을 주소)</span>
+              <span data-i18n="email">이메일 (답장 받을 주소)</span>
               <input type="email" name="email" autocomplete="email" required maxlength="200" />
             </label>
           </div>
           <label class="contact-field">
-            <span>제목</span>
+            <span data-i18n="subject">제목</span>
             <input type="text" name="subject" required maxlength="200" />
           </label>
           <label class="contact-field">
-            <span>내용</span>
+            <span data-i18n="message">내용</span>
             <textarea name="message" rows="9" required maxlength="5000"></textarea>
           </label>
 
           <input type="checkbox" name="botcheck" class="contact-honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
           <div class="contact-actions">
-            <button type="submit" class="contact-submit">보내기</button>
+            <button type="submit" class="contact-submit" data-i18n="submit">보내기</button>
             <p class="contact-status" id="contact-status" role="status" aria-live="polite"></p>
           </div>
         </form>
@@ -80,6 +76,6 @@
     </main>
 
     <footer class="site-footer">© 2026 YONGHO CHOI</footer>
-    <script src="site.js?v=yongho-8"></script>
+    <script src="site.js?v=yongho-9"></script>
   </body>
 </html>
