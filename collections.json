@@ -11,9 +11,9 @@
   ],
   "works": [
     {
-      "id": "COMSEC",
-      "name": "COMSEC",
-      "photoOrder": "desc"
+      "id": "1",
+      "name": "1",
+      "photoOrder": "asc"
     }
   ]
 }
