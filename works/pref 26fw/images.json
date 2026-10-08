@@ -1,0 +1,29 @@
+{
+  "background": null,
+  "images": [
+    {
+      "src": "works/pref 26fw/1.jpg",
+      "alt": "1"
+    },
+    {
+      "src": "works/pref 26fw/2.jpg",
+      "alt": "2"
+    },
+    {
+      "src": "works/pref 26fw/3.jpg",
+      "alt": "3"
+    },
+    {
+      "src": "works/pref 26fw/4.jpg",
+      "alt": "4"
+    },
+    {
+      "src": "works/pref 26fw/5.jpg",
+      "alt": "5"
+    },
+    {
+      "src": "works/pref 26fw/6.jpg",
+      "alt": "6"
+    }
+  ]
+}

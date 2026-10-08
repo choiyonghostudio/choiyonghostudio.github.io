@@ -1,6 +1,6 @@
 {
   "home": {
-    "featured": "mansfield.jpg"
+    "featured": "1.jpg"
   },
   "personalWorks": [
     {
@@ -11,8 +11,28 @@
   ],
   "works": [
     {
-      "id": "1",
-      "name": "1",
+      "id": "jagoryu 26s",
+      "name": "jagoryu 26s",
+      "photoOrder": "asc"
+    },
+    {
+      "id": "jagoryu 26fw mens",
+      "name": "jagoryu 26fw mens",
+      "photoOrder": "asc"
+    },
+    {
+      "id": "elune 27ss",
+      "name": "elune 27ss",
+      "photoOrder": "asc"
+    },
+    {
+      "id": "jagoryu 26fw womens",
+      "name": "jagoryu 26fw womens",
+      "photoOrder": "asc"
+    },
+    {
+      "id": "pref 26fw",
+      "name": "pref 26fw",
       "photoOrder": "asc"
     }
   ]

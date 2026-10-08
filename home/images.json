@@ -2,9 +2,9 @@
   "background": null,
   "images": [
     {
-      "src": "home/mansfield.jpg",
-      "alt": "mansfield"
+      "src": "home/1.jpg",
+      "alt": "1"
     }
   ],
-  "featured": "mansfield.jpg"
+  "featured": "1.jpg"
 }
